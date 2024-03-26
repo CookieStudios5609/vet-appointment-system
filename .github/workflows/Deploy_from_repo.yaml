@@ -30,7 +30,7 @@ jobs:
                 subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
                 tenant-id: ${{ secrets.AZURE_TENANT_ID }}
             - name: Build and push image to ACR
-              run: az acr build --image ${{ env.CONTAINER_NAME }}:${{ github.sha }} --registry ${{ env.AZURE_CONTAINER_REGISTRY }} -g ${{ env.ACR_RESOURCE_GROUP }} -f ./infrastructure/docker-compose/kafka-deployment.yml ./infrastructure/docker-compose
+              run: az acr build --username ${{ secrets.AZ_UN }} --password ${{ secrets.AZ_PW }}  --image ${{ env.CONTAINER_NAME }}:${{ github.sha }} --registry ${{ env.AZURE_CONTAINER_REGISTRY }} -g ${{ env.ACR_RESOURCE_GROUP }} -f ./infrastructure/docker-compose/kafka-deployment.yml ./infrastructure/docker-compose
     deploy:
         permissions:
             actions: read
