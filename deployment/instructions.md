@@ -22,7 +22,7 @@ https://debezium.io/documentation/reference/stable/configuration/avro.html#confl
 
 Build the debezium-connect-avro.dockerfile at the deployment file(vet-appointment-system/deployment)
 ```bash
-docker build -t com.vet.appointment.system/debezium-connect:1.0-SNAPSHOT -f debezium-connect-avro.dockerfile .
+docker build -t com.vet.appointment.system/debezium-connect:1.0-SNAPSHOT -f debezium-connect-avro.dockerfile ../
 ```
 
 Once that is done, these images should exist on your docker image list with this command, they will all need to be loaded into the Kind cluster.
@@ -84,14 +84,24 @@ kind load docker-image provectuslabs/kafka-ui:latest
 ```
 
 
-
-
-Finally, the deployment files in kubernetes directory can be run with these commands in this order:
+Afterwards, the deployment files in kubernetes directory can be run with these commands in this order:
 ```bash
 kubectl apply -f config.yml
 kubectl apply -f database-deployment.yml
 kubectl apply -f infrastructure-deployment.yml
 kubectl apply -f microservices-deployment.yml
+```
+
+Finally, port forward the Debezium connectors to the host machine, replacing the <debezium-pod-name> with the pod name from 'kubectl get pods':
+
+```bash
+kubectl port-forward pods/<debezuium-pod-name> 8083:8083
+```
+
+Start the Debezium connector script to create the connectors:
+
+```bash
+./init-connectors
 ```
 
 <h3>Accessing the Kubernetes dashboard</h3>

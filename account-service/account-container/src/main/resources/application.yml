@@ -4,6 +4,9 @@
 server:
   port: 8181
 
+jwt:
+  secret: ${JWT_SECRET:eba2564000c1fa6172fb005030cd5c173dd15e8c6e5fb8d2b67093d6dc2712ce}
+
 # Logging
 logging:
   level:
@@ -28,8 +31,8 @@ spring:
     open-in-view: false
   datasource:
     url: jdbc:postgresql://${DATABASE_HOST:localhost}:5432/postgres?stringtype=unspecified&currentSchema=account
-    username: user
-    password: admin
+    username: ${POSTGRES_USER:user}
+    password: ${POSTGRES_PASSWORD:admin}
     driver-class-name: org.postgresql.Driver
   sql:
     init:
