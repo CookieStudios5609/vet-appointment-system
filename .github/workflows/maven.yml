@@ -28,9 +28,11 @@ jobs:
         distribution: 'temurin'
         cache: maven
     - name: Build with Maven
-      run: mvn clean install; docker image ls
-
-    - name: Push images to Azure
-      run: for i in $(docker images --filter=reference="com.vet*" --format "{{.Repository}}");do echo $i; done
+      run: mvn clean install
     - name: Login to ACR
-      run: echo ${{ secrets.AZCR_PASS }} | docker login -u ${{ secrets.AZCR_USER }} --password-stdin ${{ secrets.AZCR_URL }}; docker logout
+      run: echo ${{ secrets.AZCR_PASS }} | docker login -u ${{ secrets.AZCR_USER }} --password-stdin ${{ secrets.AZCR_URL }}
+    - name: Push images to Azure
+      run: for i in $(docker images --filter=reference="*com.vet*" --format "{{.Repository}}"); do docker tag $i "${{ secrets.AZCR_URL }}/$i"; docker push "${{ secrets.AZCR_URL }}/$i:latest"; done
+    - name: Logout
+      if: always()
+      run: docker logout
