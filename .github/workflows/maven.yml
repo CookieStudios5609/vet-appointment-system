@@ -33,7 +33,7 @@ jobs:
       run: echo ${{ secrets.AZCR_PASS }} | docker login -u ${{ secrets.AZCR_USER }} --password-stdin ${{ secrets.AZCR_URL }}
     - name: Tag and push to Azure
       run: # docker tag com.vet.appointment.system/appointment-service:1.0-SNAPSHOT "${{ secrets.AZCR_URL }}/com.vet.appointment.system/appointment-service"
-          docker images
+          docker images --filter=reference="*com.vet*"
     #   run: docker push "${{ secrets.AZCR_URL }}/com.vet.appointment.system/appointment-service"
     - name: Logout
       if: always()
