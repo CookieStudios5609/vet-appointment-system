@@ -32,8 +32,10 @@ jobs:
     - name: Login to ACR
       run: echo ${{ secrets.AZCR_PASS }} | docker login -u ${{ secrets.AZCR_USER }} --password-stdin ${{ secrets.AZCR_URL }}
     - name: Tag and push to Azure
-      run: # docker tag com.vet.appointment.system/appointment-service:1.0-SNAPSHOT "${{ secrets.AZCR_URL }}/com.vet.appointment.system/appointment-service"
-          docker images --filter=reference="*com.vet*"
+      run: 
+      # periods do not work inside the filter reference
+      # docker tag com.vet.appointment.system/appointment-service:1.0-SNAPSHOT "${{ secrets.AZCR_URL }}/com.vet.appointment.system/appointment-service"
+          for i in $(docker images --filter=reference="*vet*" --format "{{.Repository}}"); do docker tag $i "${{ secrets.AZCR_URL }}/$i"; docker push "${{ secrets.AZCR_URL }}/$i:latest"; done
     #   run: docker push "${{ secrets.AZCR_URL }}/com.vet.appointment.system/appointment-service"
     - name: Logout
       if: always()
