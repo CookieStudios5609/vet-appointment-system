@@ -32,7 +32,7 @@ jobs:
     - name: Login to ACR
       run: echo ${{ secrets.AZCR_PASS }} | docker login -u ${{ secrets.AZCR_USER }} --password-stdin ${{ secrets.AZCR_URL }}
     - name: Tag images 
-      run: docker images; docker tag appointment-service "${{ secrets.AZCR_URL }}/com.vet.appointment.system/appointment-service"
+      run: docker images; docker tag com.vet.appointment.system/appointment-service:1.0-SNAPSHOT "${{ secrets.AZCR_URL }}/com.vet.appointment.system/appointment-service"
     - name: Push to Azure
       run: docker push "${{ secrets.AZCR_URL }}/com.vet.appointment.system/appointment-service"
     - name: Logout
