@@ -31,8 +31,10 @@ jobs:
       run: mvn clean install
     - name: Login to ACR
       run: echo ${{ secrets.AZCR_PASS }} | docker login -u ${{ secrets.AZCR_USER }} --password-stdin ${{ secrets.AZCR_URL }}
-    - name: Push images to Azure
-      run: for i in $(docker images --filter=reference="*com.vet*" --format "{{.Repository}}"); do docker tag $i "${{ secrets.AZCR_URL }}/$i"; docker push "${{ secrets.AZCR_URL }}/$i:latest"; done
+    - name: Tag images 
+      run: docker tag hello-world "${{ secrets.AZCR_URL }}/hello-world"
+    - name: Push to Azure
+      run: docker push "${{ secrets.AZCR_URL }}/hello-world"
     - name: Logout
       if: always()
       run: docker logout
