@@ -29,5 +29,11 @@ jobs:
         cache: maven
     - name: Build with Maven
       run: mvn clean install; docker image ls
+
+    - name: Push images to Azure
+      run: for i in $(docker images --filter=reference="com.vet*");
+            do
+              echo i
+            done
     - name: Login to ACR
-      run: docker login -u ${{ secrets.AZCR_USER }} -p ${{ secrets.AZCR_PASS }}
+      run: echo ${{ secrets.AZCR_PASS }} | docker login -u ${{ secrets.AZCR_USER }} --password-stdin ${{ secrets.AZCR_URL }}; docker logout
