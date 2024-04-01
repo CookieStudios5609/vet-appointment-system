@@ -32,12 +32,22 @@ jobs:
     - name: Login to ACR
       run: echo ${{ secrets.AZCR_PASS }} | docker login -u ${{ secrets.AZCR_USER }} --password-stdin ${{ secrets.AZCR_URL }}
     - name: Tag and push to Azure
-      run: 
-      # periods do not work inside the filter reference
-      # looks like images don't persist between steps?!
-      # docker tag com.vet.appointment.system/appointment-service:1.0-SNAPSHOT "${{ secrets.AZCR_URL }}/com.vet.appointment.system/appointment-service"
-          docker images
-    #   run: docker push "${{ secrets.AZCR_URL }}/com.vet.appointment.system/appointment-service"
+      run: >
+        docker tag com.vet.appointment.system/appointment-service:1.0-SNAPSHOT "${{ secrets.AZCR_URL }}/com.vet.appointment.system/appointment-service"; 
+        docker push "${{ secrets.AZCR_URL }}/com.vet.appointment.system/appointment-service";
+        docker tag com.vet.appointment.system/appointment-service:1.0-SNAPSHOT "${{ secrets.AZCR_URL }}/com.vet.appointment.system/payment-service"; 
+        docker push "${{ secrets.AZCR_URL }}/com.vet.appointment.system/payment-service";
+        docker tag com.vet.appointment.system/appointment-service:1.0-SNAPSHOT "${{ secrets.AZCR_URL }}/com.vet.appointment.system/account-service"; 
+        docker push "${{ secrets.AZCR_URL }}/com.vet.appointment.system/account-service";
+        docker tag com.vet.appointment.system/appointment-service:1.0-SNAPSHOT "${{ secrets.AZCR_URL }}/com.vet.appointment.system/pet-service"; 
+        docker push "${{ secrets.AZCR_URL }}/com.vet.appointment.system/pet-service";
+        docker tag com.vet.appointment.system/appointment-service:1.0-SNAPSHOT "${{ secrets.AZCR_URL }}/com.vet.appointment.system/availability-service"; 
+        docker push "${{ secrets.AZCR_URL }}/com.vet.appointment.system/availability-service";
+        docker tag com.vet.appointment.system/appointment-service:1.0-SNAPSHOT "${{ secrets.AZCR_URL }}/com.vet.appointment.system/api-gateway"; 
+        docker push "${{ secrets.AZCR_URL }}/com.vet.appointment.system/api-gateway";
+        docker tag com.vet.appointment.system/appointment-service:1.0-SNAPSHOT "${{ secrets.AZCR_URL }}/com.vet.appointment.system/eureka-server"; 
+        docker push "${{ secrets.AZCR_URL }}/com.vet.appointment.system/eureka-server";
+    #   agony
     - name: Logout
       if: always()
       run: docker logout
