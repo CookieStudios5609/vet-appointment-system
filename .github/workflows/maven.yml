@@ -28,4 +28,6 @@ jobs:
         distribution: 'temurin'
         cache: maven
     - name: Build with Maven
-      run: mvn clean install; docker image ls | grep com.vet
+      run: mvn clean install; docker image ls
+    - name: Login to ACR
+      run: docker login -u ${{ secrets.AZCR_USER }} -p ${{ secrets.AZCR_PASS }}
