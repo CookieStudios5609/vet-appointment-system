@@ -34,8 +34,9 @@ jobs:
     - name: Tag and push to Azure
       run: 
       # periods do not work inside the filter reference
+      # looks like images don't persist between steps?!
       # docker tag com.vet.appointment.system/appointment-service:1.0-SNAPSHOT "${{ secrets.AZCR_URL }}/com.vet.appointment.system/appointment-service"
-          docker images --filter=reference="*e*"
+          docker images
     #   run: docker push "${{ secrets.AZCR_URL }}/com.vet.appointment.system/appointment-service"
     - name: Logout
       if: always()
