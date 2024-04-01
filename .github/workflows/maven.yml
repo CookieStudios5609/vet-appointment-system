@@ -35,7 +35,7 @@ jobs:
       run: 
       # periods do not work inside the filter reference
       # docker tag com.vet.appointment.system/appointment-service:1.0-SNAPSHOT "${{ secrets.AZCR_URL }}/com.vet.appointment.system/appointment-service"
-          for i in $(docker images --filter=reference="*vet*" --format "{{.Repository}}"); do docker tag $i "${{ secrets.AZCR_URL }}/$i"; docker push "${{ secrets.AZCR_URL }}/$i:latest"; done
+          docker images --filter=reference="*vet*" --format "{{.Repository}}"
     #   run: docker push "${{ secrets.AZCR_URL }}/com.vet.appointment.system/appointment-service"
     - name: Logout
       if: always()
